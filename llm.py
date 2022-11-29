@@ -23,8 +23,6 @@ Human: """
 
 
 def get_response(prompt: str):
-    # print("Current prompt: ", prompt)
-    # print("End prompt")
     return openai.Completion.create(
         model="text-davinci-003",
         prompt=prompt,
@@ -35,6 +33,13 @@ def get_response(prompt: str):
         presence_penalty=0.6,
         stop=[" Human: ", " AI: "]
     )
+
+
+def parse_response_only(response: str):
+    try:
+        return response.split("AI: ")[1].split("Subjects:")[0]
+    except IndexError:
+        return ""
 
 
 def parse_subjects_from_response(response: str):
@@ -49,7 +54,7 @@ def repl():
     conversation = searchEnginePrompt
     while True:
         try:
-            user_input = prompt('>',
+            user_input = prompt('>>>',
                                 history=FileHistory('history.txt'),
                                 auto_suggest=AutoSuggestFromHistory(),
                                 completer=repl_commands,
@@ -57,8 +62,6 @@ def repl():
         except KeyboardInterrupt:
             sys.exit(0)
 
-        # print(user_input)
-        # print("Human input:", i)
         if user_input == "show_prompt":
             print(conversation)
             continue
@@ -72,7 +75,7 @@ def repl():
         print(response.split("AI: ")[1].split("Subjects:")[0])
         subjects = parse_subjects_from_response(response)
         search_links = [f"https://www.google.com/search?q={urllib.parse.quote_plus(subject)}" for subject in subjects]
-        print("Subjects:", parse_subjects_from_response(response))
+        print("Subjects:", subjects)
         print("Search Links:", search_links)
 
 
