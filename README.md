@@ -22,7 +22,7 @@ Demo: https://youtu.be/hIBOnb61c7k
 
 ## Setup
 
-1. Get a OPEN AI API key from [here](https://beta.openai.com/account/api-keys) you need an account
+1. Get a OPEN AI API key from [here](https://beta.openai.com/account/api-keys) (you need an account set up if you don't have one already)
 2. Export the API KEY as an env var
    ```bash
    export OPENAI_API_KEY=***************************************************
