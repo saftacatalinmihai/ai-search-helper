@@ -72,6 +72,7 @@ def repl():
             continue
 
         (conversation, next_prompt) = conversation.get_next_prompt(user_input)
+        # print(next_prompt)
         response = get_response(next_prompt).choices[0].text
         conversation = conversation.add_response(response)
         print(response.split("AI: ")[1].split("Subjects:")[0])
