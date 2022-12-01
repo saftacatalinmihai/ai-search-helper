@@ -80,6 +80,7 @@ def repl():
         search_links = [f"https://www.google.com/search?q={urllib.parse.quote_plus(subject)}" for subject in subjects]
         print("Subjects:", subjects)
         print("Search Links:", search_links)
+        print("\n")
 
 
 if __name__ == "__main__":
