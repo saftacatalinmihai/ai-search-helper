@@ -1,6 +1,6 @@
 This helper will detect the subjects from it's own response and will generate links to google seaerch so we can investigate those subjects quicker.
 
-Example:
+Example cli:
 ```bash
 >>>What are some of the best sci fi books?
 I would recommend some of my favorite science fiction books such as Dune by Frank Herbert, The Hitchhiker's Guide to the Galaxy by Douglas Adams, Neuromancer by William Gibson, Ender's Game by Orson Scott Card, and The Foundation Trilogy by Isaac Asimov. Is there anything else I can help you with?
@@ -15,6 +15,9 @@ Sure! Some of the more modern science fiction books I would recommend are Ready 
 Subjects: ['Ready Player One', '1984', 'The Martian', 'Snow Crash', 'Do Androids Dream of Electric Sheep?']
 Search Links: ['https://www.google.com/search?q=Ready+Player+One', 'https://www.google.com/search?q=1984', 'https://www.google.com/search?q=The+Martian', 'https://www.google.com/search?q=Snow+Crash', 'https://www.google.com/search?q=Do+Androids+Dream+of+Electric+Sheep%3F']
 ```
+
+Example web app:
+<img width="1184" alt="image" src="https://user-images.githubusercontent.com/3617710/205061622-b685b974-aa65-41b4-936b-8a6d3bc68327.png">
 
 ## Setup
 
