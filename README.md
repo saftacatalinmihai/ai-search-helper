@@ -17,7 +17,7 @@ Search Links: ['https://www.google.com/search?q=Ready+Player+One', 'https://www.
 ```
 
 Example web app:
-<img width="1297" alt="image" src="https://user-images.githubusercontent.com/3617710/205077736-2f2e5846-bc37-463f-a2b7-d1c768d23e57.png">
+https://youtu.be/hIBOnb61c7k
 
 ## Setup
 
