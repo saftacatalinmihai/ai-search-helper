@@ -59,10 +59,11 @@
         (function() {
             // your page initialization code here
             // the DOM will be available here
-            const input = document.getElementById("send-prompt");
-            input.addEventListener("keypress", function(event) {
+            const input = document.getElementById("prompt");
+            input.addEventListener("keyup", function(event) {
+                let eventKey = event.key
                 // If the user presses the "Enter" key on the keyboard
-                if (event.key === "Enter") {
+                if (eventKey === "Enter") {
                     // Cancel the default action, if needed
                     event.preventDefault();
                     // Trigger the button element with a click
