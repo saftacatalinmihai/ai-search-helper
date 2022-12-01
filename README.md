@@ -7,6 +7,8 @@ I would recommend some of my favorite science fiction books such as Dune by Fran
 
 Subjects: ['Dune', "The Hitchhiker's Guide to the Galaxy", 'Neuromancer', "Ender's Game", 'The Foundation Trilogy']
 Search Links: ['https://www.google.com/search?q=Dune', 'https://www.google.com/search?q=The+Hitchhiker%27s+Guide+to+the+Galaxy', 'https://www.google.com/search?q=Neuromancer', 'https://www.google.com/search?q=Ender%27s+Game', 'https://www.google.com/search?q=The+Foundation+Trilogy']
+
+
 >>>What about some more modern ones?
 Sure! Some of the more modern science fiction books I would recommend are Ready Player One by Ernest Cline, 1984 by George Orwell, The Martian by Andy Weir, Snow Crash by Neal Stephenson, and Do Androids Dream of Electric Sheep? by Philip K. Dick. Is there anything else I can help you with?
 
