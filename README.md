@@ -5,6 +5,11 @@
    ```bash
    export OPENAI_API_KEY=***************************************************
    ```
+3. Install the requirements
+   ```bash
+    pip install -r requirements.txt
+   ``` 
+
 ### To use the Web APP:
 1. run the script: `./run_web_app.sh`
 2. Open the browser and go to `http://127.0.0.1:5000/`
