@@ -8,6 +8,8 @@ from prompt_toolkit.history import FileHistory
 from prompt_toolkit.auto_suggest import AutoSuggestFromHistory
 from prompt_toolkit.completion import WordCompleter
 
+from conversation import Conversation
+
 openai.api_key = os.getenv("OPENAI_API_KEY")
 
 searchEnginePrompt = """
@@ -51,7 +53,7 @@ def parse_subjects_from_response(response: str):
 
 def repl():
     repl_commands = WordCompleter(['show_prompt', 'restart'], ignore_case=True)
-    conversation = searchEnginePrompt
+    conversation = Conversation(searchEnginePrompt)
     while True:
         try:
             user_input = prompt('>>>',
@@ -63,15 +65,15 @@ def repl():
             sys.exit(0)
 
         if user_input == "show_prompt":
-            print(conversation)
+            print(conversation.conversation)
             continue
         if user_input == "restart":
-            conversation = searchEnginePrompt
+            conversation = Conversation(searchEnginePrompt)
             continue
 
-        conversation = conversation + user_input
-        response = get_response(conversation).choices[0].text
-        conversation = conversation + response + "\nHuman: "
+        (conversation, next_prompt) = conversation.get_next_prompt(user_input)
+        response = get_response(next_prompt).choices[0].text
+        conversation = conversation.add_response(response)
         print(response.split("AI: ")[1].split("Subjects:")[0])
         subjects = parse_subjects_from_response(response)
         search_links = [f"https://www.google.com/search?q={urllib.parse.quote_plus(subject)}" for subject in subjects]

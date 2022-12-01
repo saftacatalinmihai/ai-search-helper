@@ -1,33 +1,57 @@
+import urllib
+from urllib import parse
+
 from flask import Flask
 from flask import request
-import llm
-from flask import render_template
+import ai
+import uuid
 
 app = Flask(__name__)
 
+conversations = {}
 
-@app.route("/prompt")
-def prompt():
-    p = request.args.get("prompt")
-    response = llm.get_response(llm.searchEnginePrompt + p).choices[0].text
+
+@app.route('/', defaults={'path': ''})
+@app.route('/<path:path>')
+def catch_all(path):
+    return app.send_static_file("index.html")
+
+
+@app.route("/new_conversation/", methods=["POST"])
+@app.route("/new_conversation/<conversation_id>", methods=["POST"])
+def new_conversation(conversation_id=None):
+    if conversation_id is None:
+        conversation_id = str(uuid.uuid4())
+
+    # if conversation_id already exists, return error
+    if conversation_id in conversations:
+        return {"error": f"conversation_id: {conversation_id} already exists"}
+
+    conversation = ai.Conversation(ai.searchEnginePrompt)
+    conversations[conversation_id] = conversation
+    return {"conversation_id": conversation_id}
+
+
+@app.route("/conversation/<conv_id>", methods=["POST", "PUT"])
+def prompt(conv_id: str):
+    # get prompt from request body from json key "prompt"
+    p = request.get_json()["prompt"]
+    print(f"Getting response for prompt: {p} ...")
+    if conv_id not in conversations:
+        return {"error": f"conversation_id: {conv_id} does not exist"}
+
+    (conversation, next_prompt) = conversations[conv_id].get_next_prompt(p)
+    print(f"Next prompt: {next_prompt}")
+    response = ai.get_response(ai.searchEnginePrompt + p).choices[0].text
+    # response = "AI: Mock response with subject 1, subject 2 and subject 3" \
+    #            "Subjects: |mock subject 1|mock subject 2|mock subject 3|"
     print(response)
-    response_text = llm.parse_response_only(response)
-    subjects = llm.parse_subjects_from_response(response)
+    response_text = ai.parse_response_only(response)
+    subjects = ai.parse_subjects_from_response(response)
 
-    # response_text = "test"
-    # subjects = ["test"]
-
-    # search_links = [f"https://www.google.com/search?q={urllib.parse.quote_plus(subject)}" for subject in subjects]
-    return render_template('prompt.html',
-                           prompt=p,
-                           response_text=response_text,
-                           subjects=subjects,
-                           )
-    # return f"<p>Prompt: {p}</p>" \
-    #        f"<p>Response: {response_text}</p>" \
-    #        f"<p>Subjects: {subjects}</p>" \
-    #        f"<div>" \
-    #        f"   <p>Subjects links</p>" \
-    #        f"   <ul>" \
-    #        ' '.join([f"<li><a href='{link}'>{link}</a></li>" for link in search_links]) + f"</div>"
+    return {
+        "response": response_text,
+        "subjects": subjects,
+        "search_links": [f"https://www.google.com/search?q={urllib.parse.quote_plus(subject)}" for subject in subjects]
+    }
 

@@ -1,0 +1,75 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html lang="en">
+<head>
+    <meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+    <title>AI Search Helper</title>
+    <script type="application/javascript">
+        let conv_id = null;
+
+        let xhr = new XMLHttpRequest();
+        let url = "/new_conversation";
+        xhr.open("POST", url, true);
+        xhr.setRequestHeader("Content-Type", "application/json");
+        xhr.onreadystatechange = function () {
+            if (xhr.readyState === 4 && xhr.status === 200) {
+                let json = JSON.parse(xhr.responseText);
+                console.log(json.conversation_id);
+                conv_id = json.conversation_id;
+            }
+        };
+        xhr.send();
+
+        function get_response_for_prompt(prompt) {
+            document.getElementById("conversation").innerHTML += prompt + "\n...";
+            fetch('/conversation/' + conv_id, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    prompt: prompt
+                }),
+            })
+                .then(response => response.json())
+                .then(data => {
+                    console.log('Success:', data);
+                    let conv = document.getElementById("conversation")
+                    conv.innerHTML = conv.innerHTML.replaceAll("...", data.response + "\n")
+                })
+                .catch((error) => {
+                    console.error('Error:', error);
+                });
+        }
+    </script>
+</head>
+<body>
+
+    <div>
+        <h1>AI Search Helper</h1>
+        <p>Enter a search term and click the button to search the web.</p>
+
+        <label for="conversation"></label><textarea id="conversation" name="conversation" rows="10" cols="50"></textarea>
+        <br>
+        <label for="prompt"></label><input type="text" id="prompt" name="prompt"  style="width: 415px" />
+        <input id="send-prompt" type="submit" value="Send" onclick="get_response_for_prompt(document.getElementById('prompt').value)"/>
+    </div>
+
+    <script type="application/javascript">
+        // self executing function here
+        (function() {
+            // your page initialization code here
+            // the DOM will be available here
+            const input = document.getElementById("send-prompt");
+            input.addEventListener("keypress", function(event) {
+                // If the user presses the "Enter" key on the keyboard
+                if (event.key === "Enter") {
+                    // Cancel the default action, if needed
+                    event.preventDefault();
+                    // Trigger the button element with a click
+                    document.getElementById("send-prompt").click();
+                }
+            });
+        })();
+    </script>
+</body>
+</html>
