@@ -1,4 +1,4 @@
-This helper will detect the subjects from it's own response and will generate links to google seaerch so we can investigate those subjects quicker.
+This AI (GPT3) helper will detect the subjects from it's own response and will generate links to google seaerch so we can investigate those subjects quicker.
 
 Example cli:
 ```bash
