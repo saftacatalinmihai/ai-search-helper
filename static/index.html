@@ -1,8 +1,10 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
-<html lang="en">
+<!DOCTYPE html>
+<html lang="en-us">
 <head>
-    <meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>AI Search Helper</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
     <script type="application/javascript">
         let conv_id = null;
 
@@ -20,6 +22,9 @@
         xhr.send();
 
         function get_response_for_prompt(prompt) {
+            // strip left whitespace from prompt
+            prompt = prompt.replace(/^\s+/g, '');
+            document.getElementById("send-prompt-button").classList.add("is-loading");
             document.getElementById("conversation").innerHTML += prompt + "\n...";
             document.getElementById("prompt").value = "";
             fetch('/conversation/' + conv_id, {
@@ -39,50 +44,82 @@
 
                     let links = document.getElementById("links");
                     let new_links = data.search_links.map((link, i) => {
-                        let subject = data.subjects[i]
-                        return "<a href='" + link + "' target=\"_blank\" >" + subject + "</a><br/>"
+                            let subject = data.subjects[i]
+                            return "<a href='" + link + "' target=\"_blank\" >" + subject + "</a><br/>"
                         }
                     );
                     links.innerHTML = new_links.reverse().toString().replaceAll(',', '') + links.innerHTML
-
+                    document.getElementById("send-prompt-button").classList.remove("is-loading");
                 })
                 .catch((error) => {
                     console.error('Error:', error);
+                    document.getElementById("send-prompt-button").classList.remove("is-loading");
                 });
         }
     </script>
 </head>
 <body>
+<section class="section">
+    <div class="container">
+        <h1 class="title">
+            AI Search Helper
+        </h1>
+        <p class="subtitle">Enter a query about anything and the helper chat bot will try to find what you're looking for</p>
 
-    <div>
-        <h1>AI Search Helper</h1>
-        <p>Enter a search term and click the button to search the web.</p>
+        <div class="columns">
+            <div class="column is-four-fifths">
+                <div class="block">
+                    <label for="conversation"></label>
+                    <textarea class="textarea"
+                              id="conversation"
+                              name="conversation"
+                              disabled></textarea>
+                </div>
+                <div class="block">
+                    <div class="field has-addons">
+                        <p class="control">
+                            <label for="prompt"></label>
+                            <input class="input is-primary is-normal"
+                                   type="text"
+                                   id="prompt"
+                                   name="prompt"
+                                   placeholder="Best scifi books"
+                            />
+                        </p>
+                        <p class="control">
+                            <button class="button is-primary" id="send-prompt-button"
+                                    onclick="get_response_for_prompt(document.getElementById('prompt').value)">
+                                Send
+                            </button>
+                        </p>
+                    </div>
+                </div>
 
-        <label for="conversation"></label><textarea id="conversation" name="conversation" rows="10" cols="50"></textarea>
-        <br/>
-        <label for="prompt"></label><input type="text" id="prompt" name="prompt"  style="width: 415px" />
-        <input id="send-prompt" type="submit" value="Send" onclick="get_response_for_prompt(document.getElementById('prompt').value)"/>
-        <br/>
-        <ol id="links"></ol>
+            </div>
+            <div class="column">
+                <ol id="links"></ol>
+            </div>
+        </div>
+
     </div>
-
-    <script type="application/javascript">
-        // self executing function here
-        (function() {
-            // your page initialization code here
-            // the DOM will be available here
-            const input = document.getElementById("prompt");
-            input.addEventListener("keyup", function(event) {
-                let eventKey = event.key
-                // If the user presses the "Enter" key on the keyboard
-                if (eventKey === "Enter") {
-                    // Cancel the default action, if needed
-                    event.preventDefault();
-                    // Trigger the button element with a click
-                    document.getElementById("send-prompt").click();
-                }
-            });
-        })();
-    </script>
+</section>
+<script type="application/javascript">
+    // self executing function here
+    (function () {
+        // your page initialization code here
+        // the DOM will be available here
+        const input = document.getElementById("prompt");
+        input.addEventListener("keyup", function (event) {
+            let eventKey = event.key
+            // If the user presses the "Enter" key on the keyboard
+            if (eventKey === "Enter") {
+                // Cancel the default action, if needed
+                event.preventDefault();
+                // Trigger the button element with a click
+                document.getElementById("send-prompt-button").click();
+            }
+        });
+    })();
+</script>
 </body>
 </html>

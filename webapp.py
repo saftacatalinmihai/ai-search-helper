@@ -1,3 +1,5 @@
+import os
+import time
 import urllib
 from urllib import parse
 
@@ -7,7 +9,6 @@ import ai
 import uuid
 
 app = Flask(__name__)
-
 conversations = {}
 
 
@@ -36,17 +37,26 @@ def new_conversation(conversation_id=None):
 def prompt(conv_id: str):
     # get prompt from request body from json key "prompt"
     p = request.get_json()["prompt"]
-    print(f"Getting response for prompt: {p} ...")
+    app.logger.info(f"Getting response for prompt: {p} ...")
     if conv_id not in conversations:
         return {"error": f"conversation_id: {conv_id} does not exist"}
 
     (conversation, next_prompt) = conversations[conv_id].get_next_prompt(p)
-    print(f"Next prompt: {next_prompt}")
-    response = ai.get_response(ai.searchEnginePrompt + p).choices[0].text
-    # response = "AI: Mock response with subject 1, subject 2 and subject 3" \
-    #            "Subjects: |mock subject 1|mock subject 2|mock subject 3|"
-    print(response)
+    app.logger.info(f"Getting response for conversation: {next_prompt} ...")
+
+    # IF the MOCK env variable is set to true, then return a mock response
+    if os.environ.get("MOCK") == "true":
+        app.logger.warn("Returning mock response")
+        # sleep for 1 second to simulate a slow response
+        time.sleep(1)
+        response = "AI: Mock response with subject 1, subject 2 and subject 3\nSubjects: |mock subject 1|mock subject 2|mock subject 3|"
+    else:
+        response = ai.get_response(next_prompt).choices[0].text
+        conversation.add_response(response)
+
+    app.logger.info(f"Response: {response}")
     response_text = ai.parse_response_only(response)
+    app.logger.info(f"Response text: {response_text}")
     subjects = ai.parse_subjects_from_response(response)
 
     return {

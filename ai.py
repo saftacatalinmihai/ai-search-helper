@@ -1,3 +1,4 @@
+import logging
 import os
 import sys
 
@@ -9,6 +10,7 @@ from prompt_toolkit.auto_suggest import AutoSuggestFromHistory
 from prompt_toolkit.completion import WordCompleter
 
 from conversation import Conversation
+
 
 openai.api_key = os.getenv("OPENAI_API_KEY")
 
@@ -54,6 +56,8 @@ def parse_subjects_from_response(response: str):
 def repl():
     repl_commands = WordCompleter(['show_prompt', 'restart'], ignore_case=True)
     conversation = Conversation(searchEnginePrompt)
+    logger = logging.getLogger('repl')
+
     while True:
         try:
             user_input = prompt('>>>',
@@ -72,7 +76,7 @@ def repl():
             continue
 
         (conversation, next_prompt) = conversation.get_next_prompt(user_input)
-        # print(next_prompt)
+        logger.info(f"Getting response for prompt: {next_prompt} ...")
         response = get_response(next_prompt).choices[0].text
         conversation = conversation.add_response(response)
         print(response.split("AI: ")[1].split("Subjects:")[0])
