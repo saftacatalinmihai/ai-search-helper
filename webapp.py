@@ -42,9 +42,9 @@ def prompt(conv_id: str):
 
     (conversation, next_prompt) = conversations[conv_id].get_next_prompt(p)
     print(f"Next prompt: {next_prompt}")
-    # response = ai.get_response(ai.searchEnginePrompt + p).choices[0].text
-    response = "AI: Mock response with subject 1, subject 2 and subject 3" \
-               "Subjects: |mock subject 1|mock subject 2|mock subject 3|"
+    response = ai.get_response(ai.searchEnginePrompt + p).choices[0].text
+    # response = "AI: Mock response with subject 1, subject 2 and subject 3" \
+    #            "Subjects: |mock subject 1|mock subject 2|mock subject 3|"
     print(response)
     response_text = ai.parse_response_only(response)
     subjects = ai.parse_subjects_from_response(response)

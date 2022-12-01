@@ -21,6 +21,7 @@
 
         function get_response_for_prompt(prompt) {
             document.getElementById("conversation").innerHTML += prompt + "\n...";
+            document.getElementById("prompt").value = "";
             fetch('/conversation/' + conv_id, {
                 method: 'POST',
                 headers: {
@@ -35,6 +36,15 @@
                     console.log('Success:', data);
                     let conv = document.getElementById("conversation")
                     conv.innerHTML = conv.innerHTML.replaceAll("...", data.response + "\n")
+
+                    let links = document.getElementById("links");
+                    let new_links = data.search_links.map((link, i) => {
+                        let subject = data.subjects[i]
+                        return "<a href='" + link + "' target=\"_blank\" >" + subject + "</a><br/>"
+                        }
+                    );
+                    links.innerHTML = new_links.reverse().toString().replaceAll(',', '') + links.innerHTML
+
                 })
                 .catch((error) => {
                     console.error('Error:', error);
@@ -49,9 +59,11 @@
         <p>Enter a search term and click the button to search the web.</p>
 
         <label for="conversation"></label><textarea id="conversation" name="conversation" rows="10" cols="50"></textarea>
-        <br>
+        <br/>
         <label for="prompt"></label><input type="text" id="prompt" name="prompt"  style="width: 415px" />
         <input id="send-prompt" type="submit" value="Send" onclick="get_response_for_prompt(document.getElementById('prompt').value)"/>
+        <br/>
+        <ol id="links"></ol>
     </div>
 
     <script type="application/javascript">
