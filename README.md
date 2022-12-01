@@ -12,4 +12,4 @@
 
 ### To use the CLI:
 1. run the script: `./run_cli.sh`
-2. 
+2. Enjoy!
