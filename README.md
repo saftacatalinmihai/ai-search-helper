@@ -1,4 +1,4 @@
-This helper will detect the subjects from it's own response and will generate links to google seaerch so we can investigate those subjects quicker.
+This AI (GPT3) helper will detect the subjects from it's own response and will generate links to google seaerch so we can investigate those subjects quicker.
 
 Example cli:
 ```bash
@@ -17,11 +17,12 @@ Search Links: ['https://www.google.com/search?q=Ready+Player+One', 'https://www.
 ```
 
 Example web app:
-<img width="1297" alt="image" src="https://user-images.githubusercontent.com/3617710/205077736-2f2e5846-bc37-463f-a2b7-d1c768d23e57.png">
+[![GPT3 search helper](https://user-images.githubusercontent.com/3617710/205077736-2f2e5846-bc37-463f-a2b7-d1c768d23e57.png)](https://youtu.be/hIBOnb61c7k)
+Demo: https://youtu.be/hIBOnb61c7k
 
 ## Setup
 
-1. Get a OPEN AI API key from [here](https://beta.openai.com/account/api-keys) you need an account
+1. Get a OPEN AI API key from [here](https://beta.openai.com/account/api-keys) (you need an account set up if you don't have one already)
 2. Export the API KEY as an env var
    ```bash
    export OPENAI_API_KEY=***************************************************
