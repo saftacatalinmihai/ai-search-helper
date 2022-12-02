@@ -48,7 +48,7 @@
                             return "<a href='" + link + "' target=\"_blank\" >" + subject + "</a><br/>"
                         }
                     );
-                    links.innerHTML = new_links.reverse().toString().replaceAll(',', '') + links.innerHTML
+                    links.innerHTML = links.innerHTML + new_links.toString().replaceAll(',', '')
                     document.getElementById("send-prompt-button").classList.remove("is-loading");
                 })
                 .catch((error) => {
@@ -64,7 +64,8 @@
         <h1 class="title">
             AI Search Helper
         </h1>
-        <p class="subtitle">Enter a query about anything and the helper chat bot will try to find what you're looking for</p>
+        <p class="subtitle">Enter a query about anything and the helper chatbot will try to find what you're looking for.
+            Works great for suggestions</p>
 
         <div class="columns">
             <div class="column is-four-fifths">
@@ -73,6 +74,7 @@
                     <textarea class="textarea"
                               id="conversation"
                               name="conversation"
+                              style="height: 400px"
                               disabled></textarea>
                 </div>
                 <div class="block">
@@ -84,13 +86,12 @@
                                    id="prompt"
                                    name="prompt"
                                    placeholder="Best scifi books"
+                                   style="width: 801px"
                             />
                         </p>
                         <p class="control">
                             <button class="button is-primary" id="send-prompt-button"
-                                    onclick="get_response_for_prompt(document.getElementById('prompt').value)">
-                                Send
-                            </button>
+                                    onclick="get_response_for_prompt(document.getElementById('prompt').value)">⏎</button>
                         </p>
                     </div>
                 </div>
@@ -106,8 +107,6 @@
 <script type="application/javascript">
     // self executing function here
     (function () {
-        // your page initialization code here
-        // the DOM will be available here
         const input = document.getElementById("prompt");
         input.addEventListener("keyup", function (event) {
             let eventKey = event.key
